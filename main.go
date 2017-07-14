@@ -19,9 +19,23 @@ var (
 
 func main() {
 	flag.Parse()
+	videoExtensions := []string{".mkv", ".avi", ".mp4"}
+	fileExt := path.Ext(*filepath)
+	if !contains(videoExtensions, fileExt) {
+		log.Fatal("Give a valid video file, extension is not supported: ", fileExt)
+	}
 	hash := getHash(*filepath)
 	userAgent := getUA()
 	downloadSubtitles(hash, userAgent, *language, *filepath)
+}
+
+func contains(arr []string, str string) bool {
+	for _, a := range arr {
+		if a == str {
+			return true
+		}
+	}
+	return false
 }
 
 func createSubtitleFilepath(filepath string) string {
